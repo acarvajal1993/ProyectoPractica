@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Tienda.Infrastracture.Reposotories.Interfaces;
 using Tienda.Web.Models;
 
 namespace Tienda.Web.Controllers
@@ -7,14 +8,17 @@ namespace Tienda.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IProductoRepository productoRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IProductoRepository productoRepository)
         {
             _logger = logger;
+            this.productoRepository = productoRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var productos = await productoRepository.ListarProductos();
             return View();
         }
 
